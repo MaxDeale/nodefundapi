@@ -1,0 +1,42 @@
+@use '../../styles' as *;
+
+.create-portfolio {
+  max-width: 600px;
+  margin: 0 auto;
+
+  .form-container {
+    @include card;
+
+    h1 {
+      margin-bottom: $spacing-xl;
+    }
+
+    .form-group {
+      margin-bottom: $spacing-lg;
+
+      label {
+        display: block;
+        margin-bottom: $spacing-sm;
+        font-weight: 500;
+        color: $text-primary;
+      }
+
+      input {
+        @include input-base;
+        width: 100%;
+      }
+    }
+
+    .form-actions {
+      display: flex;
+      gap: $spacing-md;
+      justify-content: flex-end;
+      margin-top: $spacing-xl;
+
+      button {
+        min-width: 120px;
+      }
+    }
+  }
+}
+

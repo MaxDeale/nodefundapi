@@ -1,0 +1,200 @@
+@use '../../styles' as *;
+
+.portfolio-detail {
+  .detail-header {
+    @include flex-between;
+    margin-bottom: $spacing-xl;
+
+    @include mobile {
+      flex-direction: column;
+      gap: $spacing-md;
+    }
+
+    h1 {
+      margin: $spacing-sm 0 0 0;
+    }
+  }
+
+  .back-link {
+    color: $text-secondary;
+    font-size: $font-size-sm;
+    margin-bottom: $spacing-sm;
+    display: inline-block;
+
+    &:hover {
+      color: $primary-color;
+    }
+  }
+}
+
+.value-summary {
+  @include grid(3, $spacing-lg);
+  margin-bottom: $spacing-2xl;
+
+  @include mobile {
+    @include grid(1, $spacing-md);
+  }
+}
+
+.value-card {
+  @include card;
+  text-align: center;
+
+  &.positive {
+    border-color: $success-color;
+    background: rgba($success-color, 0.05);
+  }
+
+  &.negative {
+    border-color: $danger-color;
+    background: rgba($danger-color, 0.05);
+  }
+
+  .value-label {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    margin-bottom: $spacing-sm;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .value-amount {
+    font-size: $font-size-xl;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  .value-percentage {
+    font-size: $font-size-base;
+    margin-left: $spacing-sm;
+    color: $text-secondary;
+  }
+}
+
+.holdings-section,
+.transactions-section {
+  margin-bottom: $spacing-2xl;
+
+  h2 {
+    margin-bottom: $spacing-lg;
+  }
+}
+
+.holdings-table {
+  @include card;
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    thead {
+      background: $bg-secondary;
+      
+      th {
+        padding: $spacing-md;
+        text-align: left;
+        font-weight: 600;
+        font-size: $font-size-sm;
+        color: $text-secondary;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid $border-color;
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid $border-color;
+        transition: background $transition-base;
+
+        &:hover {
+          background: $bg-secondary;
+        }
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        td {
+          padding: $spacing-md;
+          color: $text-primary;
+
+          &.positive {
+            color: $success-color;
+            font-weight: 600;
+          }
+
+          &.negative {
+            color: $danger-color;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+}
+
+.transactions-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.transaction-item {
+  @include card;
+  @include flex-between;
+  align-items: center;
+
+  @include mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-md;
+  }
+
+  .transaction-type {
+    .type-badge {
+      padding: $spacing-xs $spacing-sm;
+      border-radius: $border-radius-sm;
+      font-size: $font-size-xs;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+
+      &.buy {
+        background: rgba($success-color, 0.1);
+        color: $success-color;
+      }
+
+      &.sell {
+        background: rgba($danger-color, 0.1);
+        color: $danger-color;
+      }
+    }
+  }
+
+  .transaction-details {
+    flex: 1;
+    margin: 0 $spacing-lg;
+
+    @include mobile {
+      margin: 0;
+    }
+
+    .transaction-fund {
+      font-weight: 600;
+      margin-bottom: $spacing-xs;
+    }
+
+    .transaction-meta {
+      font-size: $font-size-sm;
+      color: $text-secondary;
+    }
+  }
+
+  .transaction-date {
+    color: $text-light;
+    font-size: $font-size-sm;
+  }
+}
+

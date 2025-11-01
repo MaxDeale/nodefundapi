@@ -1,0 +1,23 @@
+@use '../../styles' as *;
+
+.portfolios-page {
+  .page-header {
+    @include flex-between;
+    margin-bottom: $spacing-xl;
+
+    @include mobile {
+      flex-direction: column;
+      gap: $spacing-md;
+      align-items: flex-start;
+    }
+  }
+
+  .portfolios-grid {
+    @include grid(2, $spacing-lg);
+
+    @include mobile {
+      @include grid(1, $spacing-md);
+    }
+  }
+}
+

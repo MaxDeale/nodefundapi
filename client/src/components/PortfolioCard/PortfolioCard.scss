@@ -1,0 +1,100 @@
+@use '../../styles' as *;
+
+.portfolio-card {
+  @include card;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform $transition-base, box-shadow $transition-base;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+  }
+}
+
+.portfolio-header {
+  @include flex-between;
+  margin-bottom: $spacing-md;
+  padding-bottom: $spacing-md;
+  border-bottom: 1px solid $border-color;
+
+  h3 {
+    margin: 0;
+    font-size: $font-size-lg;
+  }
+
+  .portfolio-count {
+    font-size: $font-size-sm;
+    color: $text-light;
+    background: $bg-secondary;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-sm;
+  }
+}
+
+.portfolio-value {
+  .value-row {
+    @include flex-between;
+    margin-bottom: $spacing-sm;
+
+    .value-label {
+      color: $text-secondary;
+      font-size: $font-size-sm;
+    }
+
+    .value-amount {
+      font-weight: 600;
+      color: $text-primary;
+    }
+  }
+
+  .return-row {
+    @include flex-between;
+    margin-top: $spacing-md;
+    padding-top: $spacing-md;
+    border-top: 1px solid $border-color;
+
+    .return-label {
+      color: $text-secondary;
+      font-size: $font-size-sm;
+      font-weight: 600;
+    }
+
+    .return-amount {
+      font-weight: 600;
+      font-size: $font-size-lg;
+    }
+
+    &.positive {
+      .return-amount {
+        color: $success-color;
+      }
+    }
+
+    &.negative {
+      .return-amount {
+        color: $danger-color;
+      }
+    }
+
+    .return-percentage {
+      margin-left: $spacing-sm;
+      font-size: $font-size-base;
+    }
+  }
+}
+
+.portfolio-footer {
+  margin-top: $spacing-md;
+  padding-top: $spacing-md;
+  border-top: 1px solid $border-color;
+  text-align: right;
+
+  .view-details {
+    color: $primary-color;
+    font-size: $font-size-sm;
+    font-weight: 500;
+  }
+}
+

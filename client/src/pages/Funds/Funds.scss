@@ -1,0 +1,96 @@
+@use '../../styles' as *;
+
+.funds-page {
+  .page-header {
+    margin-bottom: $spacing-xl;
+  }
+
+  .category-filters {
+    display: flex;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-xl;
+    flex-wrap: wrap;
+  }
+
+  .category-filter {
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    background: $bg-primary;
+    color: $text-secondary;
+    cursor: pointer;
+    transition: all $transition-base;
+    font-size: $font-size-sm;
+    font-weight: 500;
+
+    &:hover {
+      border-color: $primary-color;
+      color: $primary-color;
+    }
+
+    &.active {
+      background: $primary-color;
+      color: $text-inverse;
+      border-color: $primary-color;
+    }
+  }
+
+  .funds-grid {
+    @include grid(3, $spacing-lg);
+
+    @include tablet {
+      @include grid(2, $spacing-lg);
+    }
+
+    @include mobile {
+      @include grid(1, $spacing-md);
+    }
+  }
+}
+
+.fund-card {
+  @include card;
+  text-align: center;
+
+  .fund-header {
+    @include flex-between;
+    margin-bottom: $spacing-md;
+    align-items: flex-start;
+
+    h3 {
+      margin: 0;
+      font-size: $font-size-lg;
+      flex: 1;
+      text-align: left;
+    }
+
+    .fund-category {
+      padding: $spacing-xs $spacing-sm;
+      background: $bg-secondary;
+      border-radius: $border-radius-sm;
+      font-size: $font-size-xs;
+      color: $text-light;
+      text-transform: capitalize;
+    }
+  }
+
+  .fund-symbol {
+    font-size: $font-size-2xl;
+    font-weight: 600;
+    color: $primary-color;
+    margin-bottom: $spacing-sm;
+  }
+
+  .fund-price {
+    font-size: $font-size-xl;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: $spacing-xs;
+  }
+
+  .fund-currency {
+    font-size: $font-size-sm;
+    color: $text-light;
+  }
+}
+

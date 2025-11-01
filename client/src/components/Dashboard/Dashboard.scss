@@ -1,0 +1,93 @@
+@use '../../styles' as *;
+
+.dashboard {
+  &-header {
+    @include flex-between;
+    margin-bottom: $spacing-xl;
+
+    @include mobile {
+      flex-direction: column;
+      gap: $spacing-md;
+      align-items: flex-start;
+    }
+
+    h1 {
+      margin: 0;
+    }
+  }
+
+  &-stats {
+    @include grid(3, $spacing-lg);
+    margin-bottom: $spacing-2xl;
+
+    @include mobile {
+      @include grid(1, $spacing-md);
+    }
+  }
+}
+
+.stat-card {
+  @include card;
+  text-align: center;
+
+  &.positive {
+    border-color: $success-color;
+    background: rgba($success-color, 0.05);
+  }
+
+  &.negative {
+    border-color: $danger-color;
+    background: rgba($danger-color, 0.05);
+  }
+
+  .stat-label {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    margin-bottom: $spacing-sm;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .stat-value {
+    font-size: $font-size-2xl;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  .stat-percentage {
+    font-size: $font-size-base;
+    margin-left: $spacing-sm;
+    color: $text-secondary;
+  }
+}
+
+.dashboard-portfolios {
+  h2 {
+    margin-bottom: $spacing-lg;
+  }
+}
+
+.portfolios-grid {
+  @include grid(2, $spacing-lg);
+
+  @include mobile {
+    @include grid(1, $spacing-md);
+  }
+}
+
+.empty-state {
+  @include flex-column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-2xl;
+  text-align: center;
+  background: $bg-primary;
+  border-radius: $border-radius;
+  border: 2px dashed $border-color;
+
+  p {
+    margin-bottom: $spacing-lg;
+    color: $text-secondary;
+  }
+}
+

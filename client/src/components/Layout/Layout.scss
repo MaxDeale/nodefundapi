@@ -1,0 +1,83 @@
+@use '../../styles' as *;
+
+.layout {
+  @include flex-column;
+  min-height: 100vh;
+}
+
+.header {
+  background: $bg-primary;
+  border-bottom: 1px solid $border-color;
+  box-shadow: $shadow-sm;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  &-content {
+    @include flex-between;
+    padding: $spacing-md 0;
+  }
+
+  .logo {
+    h1 {
+      font-size: $font-size-xl;
+      margin: 0;
+      color: $primary-color;
+    }
+  }
+}
+
+.nav {
+  display: flex;
+  gap: $spacing-md;
+
+  &-link {
+    padding: $spacing-sm $spacing-md;
+    border-radius: $border-radius;
+    color: $text-secondary;
+    font-weight: 500;
+    transition: all $transition-base;
+
+    &:hover {
+      color: $primary-color;
+      background: $bg-secondary;
+    }
+
+    &.active {
+      color: $primary-color;
+      background: rgba($primary-color, 0.1);
+    }
+  }
+}
+
+.main-content {
+  flex: 1;
+  padding: $spacing-lg 0;
+}
+
+.footer {
+  background: $bg-primary;
+  border-top: 1px solid $border-color;
+  padding: $spacing-md 0;
+  margin-top: auto;
+
+  p {
+    text-align: center;
+    color: $text-light;
+    font-size: $font-size-sm;
+    margin: 0;
+  }
+}
+
+@include mobile {
+  .header-content {
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  .nav {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
