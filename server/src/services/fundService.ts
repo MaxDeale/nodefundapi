@@ -4,20 +4,20 @@ import { Fund, FundCategory } from '../utils/types';
 export class FundService {
   constructor(private fundModel: FundModel) {}
 
-  getAllFunds(category?: FundCategory): Fund[] {
+  async getAllFunds(category?: FundCategory): Promise<Fund[]> {
     if (category) {
-      return this.fundModel.getByCategory(category);
+      return await this.fundModel.getByCategory(category);
     }
-    return this.fundModel.getAll();
+    return await this.fundModel.getAll();
   }
 
-  getFundById(id: string): Fund | null {
-    const fund = this.fundModel.getById(id);
+  async getFundById(id: string): Promise<Fund | null> {
+    const fund = await this.fundModel.getById(id);
     return fund || null;
   }
 
-  fundExists(id: string): boolean {
-    return this.fundModel.exists(id);
+  async fundExists(id: string): Promise<boolean> {
+    return await this.fundModel.exists(id);
   }
 }
 

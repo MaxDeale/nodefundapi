@@ -1,0 +1,71 @@
+// This is your Prisma schema file
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Fund {
+  id       String   @id @default(uuid())
+  name     String
+  symbol   String   @unique
+  price    Float
+  currency String   @default("USD")
+  category String // tech, healthcare, finance, energy, consumer, industrial
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  transactions Transaction[]
+  holdings     Holding[]
+
+  @@map("funds")
+}
+
+model Portfolio {
+  id        String   @id @default(uuid())
+  userId    String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  holdings     Holding[]
+  transactions Transaction[]
+
+  @@map("portfolios")
+}
+
+model Holding {
+  id                    String   @id @default(uuid())
+  portfolioId           String
+  fundId                String
+  quantity              Float
+  averagePurchasePrice  Float
+
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  fund      Fund      @relation(fields: [fundId], references: [id])
+
+  @@unique([portfolioId, fundId])
+  @@map("holdings")
+}
+
+model Transaction {
+  id          String   @id @default(uuid())
+  portfolioId String
+  fundId      String
+  type        String   // BUY or SELL
+  quantity    Float
+  price       Float
+  timestamp   DateTime @default(now())
+
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  fund      Fund      @relation(fields: [fundId], references: [id])
+
+  @@map("transactions")
+  @@index([portfolioId])
+  @@index([fundId])
+  @@index([timestamp])
+}
+

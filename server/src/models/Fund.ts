@@ -1,36 +1,66 @@
+import { prisma } from '../lib/prisma';
 import { Fund, FundCategory } from '../utils/types';
 
 export class FundModel {
-  private funds: Fund[] = [];
-
-  getAll(): Fund[] {
-    return this.funds;
+  async getAll(): Promise<Fund[]> {
+    const funds = await prisma.fund.findMany({
+      orderBy: { name: 'asc' },
+    });
+    return funds.map(this.mapToFund);
   }
 
-  getById(id: string): Fund | undefined {
-    return this.funds.find(f => f.id === id);
+  async getById(id: string): Promise<Fund | undefined> {
+    const fund = await prisma.fund.findUnique({
+      where: { id },
+    });
+    return fund ? this.mapToFund(fund) : undefined;
   }
 
-  getByCategory(category: FundCategory): Fund[] {
-    return this.funds.filter(f => f.category === category);
+  async getByCategory(category: FundCategory): Promise<Fund[]> {
+    const funds = await prisma.fund.findMany({
+      where: { category },
+      orderBy: { name: 'asc' },
+    });
+    return funds.map(this.mapToFund);
   }
 
-  create(fund: Fund): Fund {
-    this.funds.push(fund);
-    return fund;
+  async create(fund: Fund): Promise<Fund> {
+    const created = await prisma.fund.create({
+      data: {
+        id: fund.id,
+        name: fund.name,
+        symbol: fund.symbol,
+        price: fund.price,
+        currency: fund.currency,
+        category: fund.category,
+      },
+    });
+    return this.mapToFund(created);
   }
 
-  updatePrice(id: string, newPrice: number): Fund | null {
-    const fund = this.funds.find(f => f.id === id);
-    if (fund) {
-      fund.price = newPrice;
-      return fund;
-    }
-    return null;
+  async updatePrice(id: string, newPrice: number): Promise<Fund | null> {
+    const fund = await prisma.fund.update({
+      where: { id },
+      data: { price: newPrice },
+    });
+    return fund ? this.mapToFund(fund) : null;
   }
 
-  exists(id: string): boolean {
-    return this.funds.some(f => f.id === id);
+  async exists(id: string): Promise<boolean> {
+    const count = await prisma.fund.count({
+      where: { id },
+    });
+    return count > 0;
+  }
+
+  private mapToFund(dbFund: any): Fund {
+    return {
+      id: dbFund.id,
+      name: dbFund.name,
+      symbol: dbFund.symbol,
+      price: dbFund.price,
+      currency: dbFund.currency,
+      category: dbFund.category as FundCategory,
+    };
   }
 }
-

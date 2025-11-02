@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { portfoliosApi, fundsApi, transactionsApi } from '../../services/api';
+import { portfoliosApi, fundsApi } from '../../services/api';
 import type { Portfolio, PortfolioValue, Fund, Transaction } from '../../types';
 import TransactionForm from '../TransactionForm/TransactionForm';
 import './PortfolioDetail.scss';

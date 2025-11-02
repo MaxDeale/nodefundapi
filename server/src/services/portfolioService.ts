@@ -15,7 +15,7 @@ export class PortfolioService {
     this.calculationService = new CalculationService();
   }
 
-  createPortfolio(userId: string, name: string): Portfolio {
+  async createPortfolio(userId: string, name: string): Promise<Portfolio> {
     const portfolio: Portfolio = {
       id: `portfolio-${Date.now()}`,
       userId,
@@ -24,31 +24,31 @@ export class PortfolioService {
       createdAt: new Date().toISOString(),
     };
     
-    return this.portfolioModel.create(portfolio);
+    return await this.portfolioModel.create(portfolio);
   }
 
-  getPortfolioById(id: string): Portfolio | null {
-    const portfolio = this.portfolioModel.getById(id);
+  async getPortfolioById(id: string): Promise<Portfolio | null> {
+    const portfolio = await this.portfolioModel.getById(id);
     return portfolio || null;
   }
 
-  getAllPortfolios(userId?: string): Portfolio[] {
+  async getAllPortfolios(userId?: string): Promise<Portfolio[]> {
     if (userId) {
-      return this.portfolioModel.getByUserId(userId);
+      return await this.portfolioModel.getByUserId(userId);
     }
-    return this.portfolioModel.getAll();
+    return await this.portfolioModel.getAll();
   }
 
-  getPortfolioValue(id: string): PortfolioValue | null {
-    const portfolio = this.portfolioModel.getById(id);
+  async getPortfolioValue(id: string): Promise<PortfolioValue | null> {
+    const portfolio = await this.portfolioModel.getById(id);
     if (!portfolio) return null;
 
-    const funds = this.fundModel.getAll();
+    const funds = await this.fundModel.getAll();
     return this.calculationService.calculatePortfolioValue(portfolio, funds);
   }
 
-  getPortfolioReturns(id: string): { returnPercentage: number; returnAmount: number } | null {
-    const value = this.getPortfolioValue(id);
+  async getPortfolioReturns(id: string): Promise<{ returnPercentage: number; returnAmount: number } | null> {
+    const value = await this.getPortfolioValue(id);
     if (!value) return null;
 
     return {
@@ -57,42 +57,41 @@ export class PortfolioService {
     };
   }
 
-  getPortfolioHistory(id: string): any[] {
-    return this.transactionModel.getByPortfolioId(id);
+  async getPortfolioHistory(id: string): Promise<any[]> {
+    return await this.transactionModel.getByPortfolioId(id);
   }
 
-  getTopHoldings(id: string, limit: number = 5) {
-    const portfolio = this.portfolioModel.getById(id);
+  async getTopHoldings(id: string, limit: number = 5) {
+    const portfolio = await this.portfolioModel.getById(id);
     if (!portfolio) return null;
 
-    const funds = this.fundModel.getAll();
+    const funds = await this.fundModel.getAll();
     return this.calculationService.getTopHoldings(portfolio, funds, limit);
   }
 
-  getPortfolioPerformance(id: string): PortfolioPerformance | null {
-    const portfolio = this.portfolioModel.getById(id);
+  async getPortfolioPerformance(id: string): Promise<PortfolioPerformance | null> {
+    const portfolio = await this.portfolioModel.getById(id);
     if (!portfolio) return null;
 
-    const transactions = this.transactionModel.getByPortfolioId(id);
-    const funds = this.fundModel.getAll();
+    const transactions = await this.transactionModel.getByPortfolioId(id);
+    const funds = await this.fundModel.getAll();
     
     return this.calculationService.calculatePerformance(portfolio, transactions, funds);
   }
 
-  portfolioExists(id: string): boolean {
-    return this.portfolioModel.exists(id);
+  async portfolioExists(id: string): Promise<boolean> {
+    return await this.portfolioModel.exists(id);
   }
 
-  getHoldingsByFund(portfolioId: string, fundId: string): Holding | null {
-    const portfolio = this.portfolioModel.getById(portfolioId);
+  async getHoldingsByFund(portfolioId: string, fundId: string): Promise<Holding | null> {
+    const portfolio = await this.portfolioModel.getById(portfolioId);
     if (!portfolio) return null;
 
     const holding = portfolio.holdings.find(h => h.fundId === fundId);
     return holding || null;
   }
 
-  updateHoldings(portfolioId: string, holdings: Holding[]): Portfolio | null {
-    return this.portfolioModel.updateHoldings(portfolioId, holdings);
+  async updateHoldings(portfolioId: string, holdings: Holding[]): Promise<Portfolio | null> {
+    return await this.portfolioModel.updateHoldings(portfolioId, holdings);
   }
 }
-

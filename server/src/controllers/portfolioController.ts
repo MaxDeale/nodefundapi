@@ -4,20 +4,20 @@ import { PortfolioService } from '../services/portfolioService';
 export class PortfolioController {
   constructor(private portfolioService: PortfolioService) {}
 
-  createPortfolio = (req: Request, res: Response) => {
+  createPortfolio = async (req: Request, res: Response) => {
     try {
       const { userId, name } = req.body;
-      const portfolio = this.portfolioService.createPortfolio(userId, name);
+      const portfolio = await this.portfolioService.createPortfolio(userId, name);
       res.status(201).json(portfolio);
     } catch (error) {
       res.status(500).json({ error: 'Failed to create portfolio' });
     }
   };
 
-  getPortfolioById = (req: Request, res: Response) => {
+  getPortfolioById = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const portfolio = this.portfolioService.getPortfolioById(id);
+      const portfolio = await this.portfolioService.getPortfolioById(id);
 
       if (!portfolio) {
         return res.status(404).json({ error: 'Portfolio not found' });
@@ -29,20 +29,20 @@ export class PortfolioController {
     }
   };
 
-  getAllPortfolios = (req: Request, res: Response) => {
+  getAllPortfolios = async (req: Request, res: Response) => {
     try {
       const userId = req.query.userId as string;
-      const portfolios = this.portfolioService.getAllPortfolios(userId);
+      const portfolios = await this.portfolioService.getAllPortfolios(userId);
       res.json(portfolios);
     } catch (error) {
       res.status(500).json({ error: 'Failed to fetch portfolios' });
     }
   };
 
-  getPortfolioValue = (req: Request, res: Response) => {
+  getPortfolioValue = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const value = this.portfolioService.getPortfolioValue(id);
+      const value = await this.portfolioService.getPortfolioValue(id);
 
       if (!value) {
         return res.status(404).json({ error: 'Portfolio not found' });
@@ -54,10 +54,10 @@ export class PortfolioController {
     }
   };
 
-  getPortfolioReturns = (req: Request, res: Response) => {
+  getPortfolioReturns = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const returns = this.portfolioService.getPortfolioReturns(id);
+      const returns = await this.portfolioService.getPortfolioReturns(id);
 
       if (!returns) {
         return res.status(404).json({ error: 'Portfolio not found' });
@@ -69,22 +69,22 @@ export class PortfolioController {
     }
   };
 
-  getPortfolioHistory = (req: Request, res: Response) => {
+  getPortfolioHistory = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const history = this.portfolioService.getPortfolioHistory(id);
+      const history = await this.portfolioService.getPortfolioHistory(id);
       res.json(history);
     } catch (error) {
       res.status(500).json({ error: 'Failed to fetch portfolio history' });
     }
   };
 
-  getTopHoldings = (req: Request, res: Response) => {
+  getTopHoldings = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
       const limit = parseInt(req.query.limit as string) || 5;
       
-      const holdings = this.portfolioService.getTopHoldings(id, limit);
+      const holdings = await this.portfolioService.getTopHoldings(id, limit);
 
       if (!holdings) {
         return res.status(404).json({ error: 'Portfolio not found' });
@@ -96,10 +96,10 @@ export class PortfolioController {
     }
   };
 
-  getPortfolioPerformance = (req: Request, res: Response) => {
+  getPortfolioPerformance = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const performance = this.portfolioService.getPortfolioPerformance(id);
+      const performance = await this.portfolioService.getPortfolioPerformance(id);
 
       if (!performance) {
         return res.status(404).json({ error: 'Portfolio not found' });
@@ -111,4 +111,3 @@ export class PortfolioController {
     }
   };
 }
-

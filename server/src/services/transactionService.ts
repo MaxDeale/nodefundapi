@@ -12,21 +12,21 @@ export class TransactionService {
     private portfolioService: PortfolioService
   ) {}
 
-  createTransaction(
+  async createTransaction(
     portfolioId: string,
     fundId: string,
     type: TransactionType,
     quantity: number,
     price?: number
-  ): Transaction | { error: string } {
+  ): Promise<Transaction | { error: string }> {
     // Validate portfolio exists
-    const portfolio = this.portfolioModel.getById(portfolioId);
+    const portfolio = await this.portfolioModel.getById(portfolioId);
     if (!portfolio) {
       return { error: 'Portfolio not found' };
     }
 
     // Validate fund exists
-    const fund = this.fundModel.getById(fundId);
+    const fund = await this.fundModel.getById(fundId);
     if (!fund) {
       return { error: 'Fund not found' };
     }
@@ -47,7 +47,7 @@ export class TransactionService {
 
     // For SELL transactions, check if user has enough shares
     if (type === 'SELL') {
-      const holding = this.portfolioService.getHoldingsByFund(portfolioId, fundId);
+      const holding = await this.portfolioService.getHoldingsByFund(portfolioId, fundId);
       if (!holding || holding.quantity < quantity) {
         return { error: 'Insufficient holdings to sell' };
       }
@@ -65,18 +65,18 @@ export class TransactionService {
     };
 
     // Update portfolio holdings
-    this.updatePortfolioHoldings(portfolio, fundId, type, quantity, transactionPrice);
+    await this.updatePortfolioHoldings(portfolio, fundId, type, quantity, transactionPrice);
 
-    return this.transactionModel.create(transaction);
+    return await this.transactionModel.create(transaction);
   }
 
-  private updatePortfolioHoldings(
+  private async updatePortfolioHoldings(
     portfolio: Portfolio,
     fundId: string,
     type: TransactionType,
     quantity: number,
     price: number
-  ): void {
+  ): Promise<void> {
     let holdings = [...portfolio.holdings];
     let holding = holdings.find(h => h.fundId === fundId);
 
@@ -105,20 +105,19 @@ export class TransactionService {
       }
     }
 
-    this.portfolioService.updateHoldings(portfolio.id, holdings);
+    await this.portfolioService.updateHoldings(portfolio.id, holdings);
   }
 
-  getTransactionsByPortfolio(portfolioId: string): Transaction[] {
-    return this.transactionModel.getByPortfolioId(portfolioId);
+  async getTransactionsByPortfolio(portfolioId: string): Promise<Transaction[]> {
+    return await this.transactionModel.getByPortfolioId(portfolioId);
   }
 
-  getTransactionsByFund(fundId: string): Transaction[] {
-    return this.transactionModel.getByFundId(fundId);
+  async getTransactionsByFund(fundId: string): Promise<Transaction[]> {
+    return await this.transactionModel.getByFundId(fundId);
   }
 
-  getTransactionById(id: string): Transaction | null {
-    const transaction = this.transactionModel.getById(id);
+  async getTransactionById(id: string): Promise<Transaction | null> {
+    const transaction = await this.transactionModel.getById(id);
     return transaction || null;
   }
 }
-

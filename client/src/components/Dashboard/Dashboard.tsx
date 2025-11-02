@@ -27,7 +27,12 @@ const Dashboard = () => {
         return { portfolioId: portfolio.id, value };
       });
 
+      console.log("valuesPromises:", valuesPromises);
+
       const valuesResults = await Promise.all(valuesPromises);
+
+      console.log("valuesResults", valuesResults);
+
       const valuesMap: Record<string, PortfolioValue> = {};
       valuesResults.forEach(({ portfolioId, value }) => {
         valuesMap[portfolioId] = value;

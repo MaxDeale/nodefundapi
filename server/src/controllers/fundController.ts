@@ -9,20 +9,20 @@ export class FundController {
     this.calculationService = new CalculationService();
   }
 
-  getAllFunds = (req: Request, res: Response) => {
+  getAllFunds = async (req: Request, res: Response) => {
     try {
       const category = req.query.category as string;
-      const funds = this.fundService.getAllFunds(category as any);
+      const funds = await this.fundService.getAllFunds(category as any);
       res.json(funds);
     } catch (error) {
       res.status(500).json({ error: 'Failed to fetch funds' });
     }
   };
 
-  getFundById = (req: Request, res: Response) => {
+  getFundById = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const fund = this.fundService.getFundById(id);
+      const fund = await this.fundService.getFundById(id);
 
       if (!fund) {
         return res.status(404).json({ error: 'Fund not found' });
@@ -34,12 +34,12 @@ export class FundController {
     }
   };
 
-  getPriceHistory = (req: Request, res: Response) => {
+  getPriceHistory = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
       const days = parseInt(req.query.days as string) || 30;
-      
-      const fund = this.fundService.getFundById(id);
+
+      const fund = await this.fundService.getFundById(id);
       if (!fund) {
         return res.status(404).json({ error: 'Fund not found' });
       }

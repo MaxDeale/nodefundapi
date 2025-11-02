@@ -14,7 +14,7 @@ import { createFundRoutes } from './routes/fundRoutes';
 import { createPortfolioRoutes } from './routes/portfolioRoutes';
 import { createTransactionRoutes } from './routes/transactionRoutes';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
-import { initialFunds, initialPortfolios, initialTransactions } from './data/mockData';
+// Note: Seed data moved to prisma/seed.ts - run `npm run db:seed` to populate database
 import { swaggerSpec } from './config/swagger';
 
 const app = express();
@@ -30,15 +30,13 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   customSiteTitle: 'Funds API Documentation',
 }));
 
-// Initialize models with mock data
+// Initialize models (Prisma will handle data persistence)
 const fundModel = new FundModel();
 const portfolioModel = new PortfolioModel();
 const transactionModel = new TransactionModel();
 
-// Seed initial data
-initialFunds.forEach(fund => fundModel.create(fund));
-initialPortfolios.forEach(portfolio => portfolioModel.create(portfolio));
-initialTransactions.forEach(txn => transactionModel.create(txn));
+// Note: Seed data is now handled by `npm run db:seed`
+// Run migrations and seed: npm run db:migrate && npm run db:seed
 
 // Initialize services
 const fundService = new FundService(fundModel);

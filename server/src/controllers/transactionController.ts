@@ -4,11 +4,11 @@ import { TransactionService } from '../services/transactionService';
 export class TransactionController {
   constructor(private transactionService: TransactionService) {}
 
-  createTransaction = (req: Request, res: Response) => {
+  createTransaction = async (req: Request, res: Response) => {
     try {
       const { portfolioId, fundId, type, quantity, price } = req.body;
       
-      const result = this.transactionService.createTransaction(
+      const result = await this.transactionService.createTransaction(
         portfolioId,
         fundId,
         type,
@@ -26,10 +26,10 @@ export class TransactionController {
     }
   };
 
-  getTransactionsByPortfolio = (req: Request, res: Response) => {
+  getTransactionsByPortfolio = async (req: Request, res: Response) => {
     try {
       const { portfolioId } = req.params;
-      const transactions = this.transactionService.getTransactionsByPortfolio(portfolioId);
+      const transactions = await this.transactionService.getTransactionsByPortfolio(portfolioId);
       res.json(transactions);
     } catch (error) {
       res.status(500).json({ error: 'Failed to fetch transactions' });
@@ -45,4 +45,3 @@ export class TransactionController {
     }
   };
 }
-
